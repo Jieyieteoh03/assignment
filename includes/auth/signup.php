@@ -29,7 +29,7 @@ if(empty($name) || empty($email) || empty($password) || empty($confirm_password)
     $query->execute([
         'name' => $name,
         'email' => $email,
-        'password' => password_hash($passowrd, PASSWORD_DEFAULT)
+        'password' => password_hash($password, PASSWORD_DEFAULT)
     ]);
     $_SESSION["user"] = $user;
 

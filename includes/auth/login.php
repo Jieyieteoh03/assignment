@@ -15,15 +15,15 @@
         ]);
         $user = $query->fetch();
         if ( empty( $user ) ) {
-            $error = "User doesnt exist la";
-        } else {
+            $error = "User doesnt exist";
+        } else { 
             if ( password_verify( $password, $user["password"] ) ) {
                 $_SESSION["user"] = $user;
 
                 header("Location: /dashboard");
                 exit;
             } else {
-                $error = "Don't cincai hack ah";
+                $error = "Email or password incorrect";
             }
         }
 
