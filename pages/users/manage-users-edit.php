@@ -1,52 +1,71 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple CMS</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-    />
-    <style type="text/css">
-      body {
-        background: #f1f1f1;
+<?php
+
+    // make sure the id parameter is available in the url
+    if ( isset( $_GET['id'] ) ) {
+      // load database
+      $database = connectToDB();
+
+      // load the user data based on the id
+      $sql = "SELECT * FROM users WHERE id = :id";
+      $query = $database->prepare( $sql );
+      $query->execute([
+        'id' => $_GET['id']
+      ]);
+
+      // fetch
+      $user = $query->fetch();
+
+      // make sure user data is found in database
+      if ( !$user ) {
+        // if user don't exists, then we redirect back to manage-users
+        header("Location: /manage-users");
+        exit;
       }
-    </style>
-  </head>
-  <body>
+
+    } else {
+      // if $_GET['id'] is not available, then redirect the user back to manage-users
+      header("Location: /manage-users");
+      exit;
+    }
+
+    require "parts/header.php";
+?>
     <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h1 class="h1">Edit User</h1>
       </div>
       <div class="card mb-2 p-4">
-        <form>
+        <form
+          method="POST"
+          action="/users/edit">
+          <?php require "parts/error.php"; ?>
           <div class="mb-3">
             <div class="row">
               <div class="col">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" />
+                <input type="text" class="form-control" id="name" name="name" value="<?= $user['name']; ?>" />
               </div>
               <div class="col">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" />
+                <input type="email" class="form-control" id="email" name="email" value="<?= $user['email']; ?>" />
               </div>
             </div>
           </div>
           <div class="mb-3">
             <label for="role" class="form-label">Role</label>
-            <select class="form-control" id="role">
+            <select class="form-control" id="role" name="role">
               <option value="">Select an option</option>
-              <option value="user">User</option>
-              <option value="editor">Editor</option>
-              <option value="admin">Admin</option>
+              <option value="user" <?php
+                if ( $user['role'] === 'user' ) {
+                  echo 'selected';
+                }
+              ?>>User</option>
+              <option value="editor" <?= $user['role'] === 'editor' ? 'selected' : ''; ?>>Editor</option>
+              <option value="admin" <?=  $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
             </select>
           </div>
           <div class="d-grid">
+            <input type="hidden" name="id" value="<?= $user['id']; ?>" />
             <button type="submit" class="btn btn-primary">Update</button>
           </div>
         </form>
@@ -58,10 +77,5 @@
       </div>
     </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+<?php
+  require "parts/footer.php";
