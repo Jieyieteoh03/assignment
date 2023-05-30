@@ -1,5 +1,11 @@
 <?php
-
+   // check if the current user is an admin or not
+   if ( !isAdmin() ) {
+    // if current user is not an admin, redirect to dashboard
+    header("Location: /dashboard");
+    exit;
+  }
+  
   // load data from database
   $database = connectToDB();
 
@@ -63,7 +69,7 @@
               <td class="text-end">
                 <div class="buttons">
                   <a
-                    href="/manage-users-edit?id=<?= $user['id']; ?>"
+                    href="/manage-users-edit? id=<?= $user['id']; ?>"
                     class="btn btn-success btn-sm me-2"
                     ><i class="bi bi-pencil"></i
                   ></a>

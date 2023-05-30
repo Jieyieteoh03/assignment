@@ -1,4 +1,13 @@
 <?php
+   
+   // check if the current user is an admin or not
+   if ( !isAdmin() ) {
+    // if current user is not an admin, redirect to dashboard
+    header("Location: /dashboard");
+    exit;
+  }
+
+
   require "parts/header.php";
 ?>
     <div class="container mx-auto my-5" style="max-width: 700px;">
@@ -10,7 +19,7 @@
           method="POST"
           action="users/add"
           >
-          <?php require "parts/message_error.php";?>
+          <?php require "parts/error.php";?>
           <div class="mb-3">
             <div class="row">
               <div class="col">

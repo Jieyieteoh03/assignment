@@ -29,6 +29,15 @@
         case "users/delete":
             require "includes/users/delete.php";
             break;
+        case "posts/add":
+            require "includes/posts/add.php";
+            break;
+        case "posts/edit":
+            require "includes/posts/edit.php";
+            break;
+        case "posts/delete":
+            require "includes/posts/delete.php";
+            break;
         case 'dashboard': //condition
             require "pages/dashboard.php";
             break;
@@ -38,13 +47,13 @@
         case 'logout': //condition
             require "pages/logout.php";
             break;
-        case 'manage-posts': //condition
+        case 'manage-post': //condition
             require "pages/posts/manage-post.php";
             break;
-        case 'manage-posts-add': //condition
+        case 'manage-post-add': //condition
             require "pages/posts/manage-post-add.php";
             break;
-        case 'manage-posts-edit': //condition
+        case 'manage-post-edit': //condition
             require "pages/posts/manage-post-edit.php";
             break;
         case 'manage-users': //condition

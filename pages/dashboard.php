@@ -16,13 +16,14 @@
                 Manage Posts
               </h5>
               <div class="text-center mt-3">
-                <a href="/manage-posts" class="btn btn-primary btn-sm"
+                <a href="/manage-post" class="btn btn-primary btn-sm"
                   >Access</a
                 >
               </div>
             </div>
           </div>
         </div>
+        <?php if(ifEditorOrAdmin()): ?>
         <div class="col">
           <div class="card mb-2">
             <div class="card-body">
@@ -40,6 +41,7 @@
             </div>
           </div>
         </div>
+        <?php endif; ?>
       </div>
       <div class="mt-4 text-center">
         <a href="/" class="btn btn-link btn-sm"
