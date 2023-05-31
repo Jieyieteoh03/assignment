@@ -1,8 +1,8 @@
 <?php
-  // if( !isUserLoggedIn()){
-  //   header("Location: /");
-  //   exit;
-  // }
+  if( !isUserLoggedIn()){
+    header("Location: /");
+    exit;
+  }
   // load database
   $database = connectToDB();
 
