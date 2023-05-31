@@ -35,6 +35,7 @@
         </div>
       </div>
       <div class="card mb-2 p-4">
+      <?php require "parts/error.php"; ?>
         <?php require "parts/success.php"; ?>
         <table class="table">
           <thead>
@@ -48,14 +49,14 @@
           <tbody>
             <!-- display out all the posts using foreach -->
           <?php foreach ($posts as $post) { ?>
-              <!-- <tr class="<?php
+              <tr class="<?php
                 if ( 
-                  isset( $_SESSION['new_user_email'] ) && 
-                  $_SESSION['new_user_email'] == $post['email'] ) {
+                  isset( $_SESSION['new_post'] ) && 
+                  $_SESSION['new_post'] == $post['title'] ) {
                     echo "table-success";
-                    unset( $_SESSION['new_user_email'] );
+                    unset( $_SESSION['new_post'] );
                 }
-              ?>"> -->
+              ?>">
               <th scope="row"><?= $post['id']; ?></th>
               <td><?= $post['title']; ?></td>
               <td><?= $post['content']; ?></td>

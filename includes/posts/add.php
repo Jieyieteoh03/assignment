@@ -22,6 +22,7 @@
         ]);
         
         $_SESSION["success"] = "New post added";
+        $_SESSION['new_post'] = $title;
         header("Location: /manage-post");
         exit;
     }

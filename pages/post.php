@@ -19,7 +19,7 @@
       <?php echo $posts['content']; ?>
       </p>
       <div class="text-center mt-3">
-        <a href="/manage-post" class="btn btn-link btn-sm"
+        <a href="/" class="btn btn-link btn-sm"
           ><i class="bi bi-arrow-left"></i> Back</a
         >
       </div>
