@@ -1,37 +1,55 @@
 <?php
-
-    $database=connectToDB();
+    // replace connectTODB with new DB() class
+    $database = new DB();
 
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    if(empty($email) || empty($password)){
-        $error = "Please enter field";
-    }else{
-        $sql = "SELECT * FROM users WHERE email = :email";
-        $query = $database->prepare($sql);
-        $query -> execute([
-           'email' => $email
-        ]);
-        $user = $query->fetch();
+    // 1. make sure all fields are not empty
+    if ( empty($email) || empty($password) ) {
+        $error= 'All fields are required';
+    } else {
+        // retrieve the user based on the email provided
+        // // recipe
+        // $sql = "SELECT * FROM users where email = :email";
+        // // prepare
+        // $query = $database->prepare( $sql );
+        // // execute
+        // $query->execute([
+        //     'email' => $email
+        // ]);
+        // fetch (eat)
+        $user = $database->fetch(
+            "SELECT * FROM users where email = :email",
+            [
+                'email' => $email
+            ]
+        ); // fetch() will only return one row of data
+
+        // make sure the email provided is in the database
         if ( empty( $user ) ) {
-            $error = "User doesnt exist";
-        } else { 
+            $error ="The email provided does not exists";
+        } else {
+            // make sure password is correct
             if ( password_verify( $password, $user["password"] ) ) {
+                // if password is valid, set the user session
                 $_SESSION["user"] = $user;
 
                 header("Location: /dashboard");
                 exit;
             } else {
-                $error = "Email or password incorrect";
+                // if password is incorrect
+                $error = "The password provided is not match";
             }
         }
 
     }
-    
-    if ( isset( $error ) ) {
-        $_SESSION['error'] = $error;
-        header("Location: /login");
-        exit;
-    }
-?>
+
+        // do error checking
+        if ( isset( $error ) ) {
+            // store the error message in session
+            $_SESSION['error'] = $error;
+            // redirect the user back to login.php
+            header("Location: /login");
+            exit;
+        }

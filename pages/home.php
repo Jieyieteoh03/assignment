@@ -1,11 +1,10 @@
 <?php
-  $database = connectToDB();
-
-  $sql = "SELECT * FROM posts";
-  $query = $database->prepare($sql);
-  $query->execute();
-  $posts = $query->fetchAll();
-
+  $db = new DB();
+  $posts = $db->fetchAll(
+    "SELECT * FROM posts 
+    WHERE status = 'publish'
+    ORDER BY id DESC"
+  );
   require "parts/header.php"
 
 ?>
@@ -15,7 +14,10 @@
         <div class="card mb-2">
         <div class="card-body">
           <h5 class="card-title"><?php echo $post['title']; ?></h5>
-          <p class="card-text"><?php echo $post['content']; ?></p>
+          <p class="card-text"><?php 
+            $excerpt = str_split( $post['content'], 100 );
+            echo $excerpt[0] . "... read more"; 
+          ?></p>
           <div class="text-end">
             <a href="/post?id=<?= $post['id']; ?>" class="btn btn-primary btn-sm">Read More</a>
           </div>

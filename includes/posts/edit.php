@@ -1,4 +1,10 @@
 <?php
+     // make sure the user is logged in
+     if ( !Auth::isUserLoggedIn() ) {
+        header("Location: /");
+        exit;
+    }
+
     $database = connectToDB();
 
     $title = $_POST["title"];
@@ -16,16 +22,18 @@
         exit;
     }
 
-    $sql = "UPDATE posts SET title = :title, content = :content, status = :status WHERE id = :id";
+    $sql = "UPDATE posts SET title = :title, content = :content, status = :status, modified_by = :modified_by WHERE id = :id";
     $query = $database->prepare($sql);
     $query->execute([
         'title' => $title,
         'content' => $content,
         'status' => $status,
-        'id' => $id
+        'id' => $id,
+        'modified_by' => $_SESSION['user']['id']
     ]);
 
     $_SESSION["success"] = "Post edited";
+    $_SESSION["update_post"] = $title;
 
     header("Location: /manage-post");
     exit;

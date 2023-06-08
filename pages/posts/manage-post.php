@@ -1,26 +1,10 @@
 <?php
-  if( !isUserLoggedIn()){
+  if( !Auth::isUserLoggedIn()){
     header("Location: /");
     exit;
   }
-  // load database
-  $database = connectToDB();
-
-  // get all posts
-  if(ifEditorOrAdmin()){
-  $sql = "SELECT * FROM posts";
-  $query = $database->prepare($sql);
-  $query -> execute();
-  $posts = $query->fetchAll();
-  } else {
-    $sql = "SELECT * FROM posts WHERE user_id = :user_id";
-    $query = $database->prepare($sql);
-    $query -> execute([
-      'user_id' => $_SESSION["user"]["id"]
-    ]);
-
-    $posts = $query->fetchAll();
-  }
+  
+  $posts = Post::getPostsByUserRole();
 
   require "parts/header.php"
 
@@ -41,7 +25,8 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col" style="width: 40%;">Title</th>
+              <th scope="col" style="width: 10%;">Title</th>
+              <th scope="col">Created By</th>
               <th scope="col">Status</th>
               <th scope="col" class="text-end">Actions</th>
             </tr>
@@ -59,7 +44,7 @@
               ?>">
               <th scope="row"><?= $post['id']; ?></th>
               <td><?= $post['title']; ?></td>
-              <td><?= $post['content']; ?></td>
+              <td><?= $post['user_name']; ?> <?= $post['user_email']; ?></td>
               <td>
                 <span class="
                 <?php 

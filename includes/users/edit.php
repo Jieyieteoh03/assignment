@@ -1,4 +1,9 @@
 <?php
+    // make sure the user is logged in
+    if ( !Auth::isUserLoggedIn() ) {
+        header("Location: /");
+        exit;
+    }
 
     // load the database
     $database = connectToDB();

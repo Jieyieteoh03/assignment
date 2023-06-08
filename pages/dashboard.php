@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-        <?php if(ifEditorOrAdmin()): ?>
+        <?php if ( Auth::isAdmin() ) : ?>
         <div class="col">
           <div class="card mb-2">
             <div class="card-body">

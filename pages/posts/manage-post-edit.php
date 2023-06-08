@@ -1,17 +1,14 @@
 <?php
-  if (isset($_GET['id'])){
-    $database = connectToDB();
 
-    $sql = "SELECT * FROM posts WHERE id = :id";
-    $query = $database->prepare($sql);
-    $query->execute([
-      'id' => $_GET['id']
-    ]);
+  // make sure the user is logged in
+  if ( !Auth::isUserLoggedIn() ) {
+    header("Location: /");
+    exit;
   }
 
-  $posts = $query->fetch();
-
-  require "parts/header.php"
+  $posts = Post::getPostByID( );
+   
+  require "parts/header.php";
 
 ?>
     <div class="container mx-auto my-5" style="max-width: 700px;">
@@ -43,6 +40,21 @@
             <option value="pending" <?= $posts['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
               <option value="publish" <?=  $posts['status'] === 'publish' ? 'selected' : ''; ?>>Publish</option>
             </select>
+          </div>
+          <div class="mb-3">
+            Last modified by: 
+              <?php 
+                // $sql = "SELECT * FROM users where id = :id";
+                // $query = $database->prepare( $sql );
+                // $query->execute([
+                //   'id' => $post["modified_by"]
+                // ]);
+                // $user = $query->fetch();
+                // echo $user["name"];
+
+                echo $posts["name"];
+              ?> 
+              on ( <?= $posts["modified_at"]; ?> )
           </div>
           <div class="text-end">
           <input type="hidden" name="id" value="<?= $posts['id']; ?>" />

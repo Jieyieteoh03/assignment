@@ -1,38 +1,11 @@
 <?php
-    // check if the current user is an admin or not
-    if ( !isAdmin() ) {
-      // if current user is not an admin, redirect to dashboard
-      header("Location: /dashboard");
-      exit;
-    }
+   if ( !Auth::isAdmin() ) {
+    // if current user is not an admin, redirect to dashboard
+    header("Location: /dashboard");
+    exit;
+  }
 
-    // make sure the id parameter is available in the url
-    if ( isset( $_GET['id'] ) ) {
-      // load database
-      $database = connectToDB();
-
-      // load the user data based on the id
-      $sql = "SELECT * FROM users WHERE id = :id";
-      $query = $database->prepare( $sql );
-      $query->execute([
-        'id' => $_GET['id']
-      ]);
-
-      // fetch
-      $user = $query->fetch();
-
-      // make sure user data is found in database
-      if ( !$user ) {
-        // if user don't exists, then we redirect back to manage-users
-        header("Location: /manage-users");
-        exit;
-      }
-
-    } else {
-      // if $_GET['id'] is not available, then redirect the user back to manage-users
-      header("Location: /manage-users");
-      exit;
-    }
+    $user = User::getUserByID( $_GET ["id"] );
 
     require "parts/header.php";
 ?>

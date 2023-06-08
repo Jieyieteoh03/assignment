@@ -1,4 +1,11 @@
 <?php
+      // make sure the user is logged in
+      if ( !Auth::isUserLoggedIn() ) {
+        header("Location: /");
+        exit;
+    }
+
+
     $database = connectToDB();
 
     $id = $_POST["id"];

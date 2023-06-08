@@ -1,4 +1,10 @@
 <?php
+    // make sure the user is logged in
+    if ( !Auth::isUserLoggedIn() ) {
+        header("Location: /");
+        exit;
+    }
+
     $database = connectToDB();
 
     $title = $_POST['title'];
@@ -22,7 +28,6 @@
         ]);
         
         $_SESSION["success"] = "New post added";
-        $_SESSION['new_post'] = $title;
         header("Location: /manage-post");
         exit;
     }

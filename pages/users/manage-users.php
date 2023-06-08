@@ -1,22 +1,15 @@
 <?php
    // check if the current user is an admin or not
-   if ( !isAdmin() ) {
-    // if current user is not an admin, redirect to dashboard
-    header("Location: /dashboard");
-    exit;
-  }
+    if ( !Auth::isAdmin() ) {
+      // if current user is not an admin, redirect to dashboard
+      header("Location: /dashboard");
+      exit;
+    }
   
-  // load data from database
-  $database = connectToDB();
-
-  // get all the users
-  $sql = "SELECT * FROM users";
-  $query = $database->prepare($sql);
-  $query->execute();
-
-  // fetch the data from query
-  $users = $query->fetchAll();
-
+  
+   // load data from database
+   $users = User::getUsers();
+ 
   require "parts/header.php";
 ?>
     <div class="container mx-auto my-5" style="max-width: 700px;">
@@ -69,7 +62,7 @@
               <td class="text-end">
                 <div class="buttons">
                   <a
-                    href="/manage-users-edit? id=<?= $user['id']; ?>"
+                    href="/manage-users-edit?id=<?= $user['id']; ?>"
                     class="btn btn-success btn-sm me-2"
                     ><i class="bi bi-pencil"></i
                   ></a>
