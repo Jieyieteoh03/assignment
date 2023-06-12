@@ -44,6 +44,9 @@
         case "posts/delete":
             Post::delete(); 
             break;
+        case "comments/add":
+            Comment::add();
+            break;
         case 'dashboard': //condition
             require "pages/dashboard.php";
             break;

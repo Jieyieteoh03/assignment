@@ -1,10 +1,6 @@
 <?php
-  $db = new DB();
-  $posts = $db->fetchAll(
-    "SELECT * FROM posts 
-    WHERE status = 'publish'
-    ORDER BY id DESC"
-  );
+  $posts = Post::getPublishPosts();
+  
   require "parts/header.php"
 
 ?>

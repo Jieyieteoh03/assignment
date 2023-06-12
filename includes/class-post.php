@@ -5,30 +5,13 @@ class Post
 
     public static function getPublishPosts()
     {
-        if ( isset( $_GET['id'] ) ) {
+        $db = new DB();
 
-            $db = new DB();
-
-             //  $sql = "SELECT * FROM posts WHERE id = :id";
-            $posts =  $db->fetch(
-                "SELECT * FROM posts WHERE id = :id AND status = :status",
-                [
-                'id' => $_GET['id']
-                ]
-            );
-         
-            if ( !$posts ) {
-             // if post don't exists, then we redirect back to manage-posts
-             header("Location: /manage-posts");
-             exit;
-           }
-           return $posts;
-
-         } else {
-           // if $_GET['id'] is not available, then redirect the user back to manage-users
-           header("Location: /manage-posts");
-           exit;
-         }
+        return $db->fetchAll(
+            "SELECT * FROM posts 
+            WHERE status = 'publish'
+            ORDER BY id DESC"
+        );
     }
 
     public static function getPostsByUserRole()
@@ -41,12 +24,13 @@ class Post
         // * means get all the columns from the selected table
         return $db->fetchAll(
             "SELECT 
-            posts.*, 
-            users.name AS user_name,
-            users.email AS user_email 
-            FROM posts 
-            JOIN users 
-            ON posts.user_id = users.id",
+                posts.id, 
+                posts.title, 
+                posts.status, 
+                users.name AS user_name 
+                FROM posts 
+                JOIN users 
+                ON posts.user_id = users.id",
         );
         } else {
             return $db->fetchAll(
@@ -68,26 +52,49 @@ class Post
         }
     }
 
-    public static function getPostByID(  )
+    public static function getPostByID( $post_id )
     {
         if ( isset( $_GET['id'] ) ) {
 
             $db = new DB();
-
-            return $db->fetch(
-            "SELECT posts.*, 
-            users.name 
-            FROM posts 
-            JOIN users
-            ON posts.modified_by = users.id
-            WHERE posts.id = :id",
-            //  $sql = "SELECT * FROM posts WHERE id = :id";
+    
+            // make sure the post is published
+            $post = $db->fetch(
+            "SELECT * FROM posts WHERE id = :id",
             [
                 'id' => $_GET['id']
-            ]);
+            ]
+            );
+    
+            if ( !$post ) {
+                // if post don't exists, then we redirect back to home
+                header("Location: /");
+                exit;
+            }
+            return $post;
+    
+        } else {
+            // if $_GET['id'] is not available, then redirect the user back to home
+            header("Location: /");
+            exit;
+        }
+    }
 
-            } else {
-            // if $_GET['id'] is not available, then redirect the user back to manage-users
+    public static function getPostEditByID()
+    {
+        if ( isset( $_GET['id'] ) ) {
+            // load database
+            $db = new DB();
+            // load the post data based on the id
+            $sql = "SELECT
+            posts.*,
+            users.name
+            FROM posts
+            JOIN users
+            ON posts.modified_by = users.id
+            WHERE posts.id = :id";
+            return $post = $db->fetch($sql,['id' => $_GET['id']]);
+          }else{
             header("Location: /manage-posts");
             exit;
         }

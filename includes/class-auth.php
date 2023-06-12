@@ -32,6 +32,15 @@ class Auth
                 }
             }
         }
+
+        // do error checking
+        if ( isset( $error ) ) {
+            // store the error message in session
+            $_SESSION['error'] = $error;
+            // redirect the user back to login.php
+            header("Location: /login");
+            exit;
+        }
     }
 
     public static function signup()

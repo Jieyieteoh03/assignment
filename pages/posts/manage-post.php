@@ -44,7 +44,7 @@
               ?>">
               <th scope="row"><?= $post['id']; ?></th>
               <td><?= $post['title']; ?></td>
-              <td><?= $post['user_name']; ?> <?= $post['user_email']; ?></td>
+              <td><?= $post['user_name']; ?></td>
               <td>
                 <span class="
                 <?php 

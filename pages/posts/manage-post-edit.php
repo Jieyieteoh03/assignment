@@ -6,7 +6,7 @@
     exit;
   }
 
-  $posts = Post::getPostByID( );
+  $posts = Post::getPostEditByID();
    
   require "parts/header.php";
 
